@@ -29,6 +29,7 @@
                     <strong>TURTLE QUIZ</strong>
                 </h3>
             </div>
+            <!-- List controller -->
             <div ng-controller="listCtrl as list" ng-hide="list.quizMetrics.quizActive">
                 <form class="form-inline well well - sm clearfix">
                     <span class="glyphicon glyphicon-search"></span>
@@ -93,9 +94,44 @@
                          
             </div>
             </div>
+           
             <!-- Quiz controller -->
             <div ng-controller="quizCtrl as quiz" ng-show = "quiz.quizMetrics.quizActive">
-                <h1>Quiz</h1>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <h4>Progress:</h4>
+                        <div class="btn-toolbar">
+                            <button class="btn"
+                                    ng-repeat = "question in quiz.DataService.quizQuestions"
+                                    ng-class = "{'btn-info':question.selected !== null, 
+                                                'btn-danger':question.selected === null}">
+                            <span class="glyphicon" 
+                                  ng-class = "{'glyphicon-pencil': question.selected !== null,
+                                              'glyphicon-question-sign': question.selected === null}">
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="row">
+                            <h4>Legend:</h4>
+                            <div class="col-sm-4">
+                                <button class="btn btn-info">
+                                    <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                    </button>
+                                <p>Answered</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-question-sign">
+                                    </span>
+                                    </button>
+                                <p>Unanswered</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -104,5 +140,6 @@
         <script src="controllers/list.js"></script>
         <script src="controllers/quiz.js"></script>
         <script src="factories/quizMetrics.js"></script>
+        <script src="factories/dataservice.js"></script>
     </body>
     </html>
