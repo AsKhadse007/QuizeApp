@@ -5,7 +5,7 @@
     
     function QuizMetrics () {
         var quizObj ={
-          quizActive: false  
+          quizActive: false, 
             changeState: changeState
         };
         return quizObj;

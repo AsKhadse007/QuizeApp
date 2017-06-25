@@ -104,7 +104,8 @@
                             <button class="btn"
                                     ng-repeat = "question in quiz.DataService.quizQuestions"
                                     ng-class = "{'btn-info':question.selected !== null, 
-                                                'btn-danger':question.selected === null}">
+                                                'btn-danger':question.selected === null}"
+                                    ng-click = "quiz.setActiveQuestion($index)">
                             <span class="glyphicon" 
                                   ng-class = "{'glyphicon-pencil': question.selected !== null,
                                               'glyphicon-question-sign': question.selected === null}">
@@ -134,19 +135,38 @@
                 </div>
                 <!-- Progress area -->
                 <div class="row">
+                    <div class="alert alert-danger"
+                         ng-show = "quiz.error">
+                        Error! You have not answered all questions.
+                        <button class="close" ng-click = "quiz.error = false">&times;</button>
+                    </div>
                     <h3>Question:</h3>
                     <div class="well well-sm">
                         <div class="row">
                             <div class="col-xs-12">
                                 <h4>{{quiz.activeQuestion+1+". "+quiz.DataService.quizQuestions[quiz.activeQuestion].text}}</h4>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-5 " ng-repeat = "answer in quiz.DataService.quizQuestions[quiz.activeQuestion].possibilities">
-                                    <h4 class="answer">
-                                        {{answer.answer}}</h4>
+                            <div class="row" ng-if="quiz.DataService.quizQuestions[quiz.activeQuestion].type === 'text'">
+                                <div class="col-sm-6" ng-repeat = "answer in quiz.DataService.quizQuestions[quiz.activeQuestion].possibilities">
+                                    <h4 class="answer"
+                                        ng-class="{'bg-info': $index === quiz.DataService.quizQuestions[quiz.activeQuestion].selected}"
+                                        ng-click = "quiz.selectAnswer($index)">
+                                        {{answer.answer}}
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row" ng-if = "quiz.DataService.quizQuestions[quiz.activeQuestion].type === 'image'">
+                                <div class="col-sm-6" ng-repeat = "answer in quiz.DataService.quizQuestions[quiz.activeQuestion].possibilities">
+                                    <div class="image-answer" ng-class="{'image-selected': $index === quiz.DataService.quizQuestions[quiz.activeQuestion].selected}"
+                                        ng-click = "quiz.selectAnswer($index)">
+                                        <img ng-src="{{answer.answer}}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <button class="btn btn-warning" ng-click="quiz.questionAnswered()">
+                        Continue
+                    </button>
                     </div>
                 </div>
             </div>
