@@ -12,7 +12,9 @@
         vm.questionAnswered = questionAnswered;
         vm.setActiveQuestion = setActiveQuestion;
         vm.selectAnswer = selectAnswer;
+        vm.finalizeAnswers = finalizeAnswers;
         vm.error = false;
+        vm.finalize = false;
         vm.activeQuestion = 0;
         
         var numQuestionsAnswered = 0;
@@ -43,16 +45,28 @@
             if (DataService.quizQuestions[vm.activeQuestion].selected !== null) {
                     numQuestionsAnswered++;
                 if (numQuestionsAnswered >= quizLenght) {
-                        // finalize quiz -- checks for leftover que and focus on it
+                        // finalize quiz -- checks for leftover questions and focus on it
                         for (i = 0; i < quizLenght; i++) {
                             if (DataService.quizQuestions[i].selected === null) {
                                     setActiveQuestion(i);
                                 return;
                                 }
                         }
+                    vm.error = false;
+                    vm.finalize = true;
+                    return;
                     }
                 }
             vm.setActiveQuestion();
+        }
+        
+        function finalizeAnswers () {
+            vm.finalize = false;
+            numQuestionsAnswered = 0;
+            activeQuestion = 0;
+            quizMetrics.markQuiz();
+            quizMetrics.changeState("quiz", false);
+            quizMetrics.changeState("results", true);
         }
         
         function selectAnswer (index) {
